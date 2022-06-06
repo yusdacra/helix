@@ -522,6 +522,10 @@ and <a href="./usage.html#textobject">textobject</a> usage.</p>
 <tr><td><code>l</code>, <code>Ctrl-l</code>, <code>Right</code></td><td>Move to right split</td><td><code>jump_view_right</code></td></tr>
 <tr><td><code>q</code>, <code>Ctrl-q</code></td><td>Close current window</td><td><code>wclose</code></td></tr>
 <tr><td><code>o</code>, <code>Ctrl-o</code></td><td>Only keep the current window, closing all the others</td><td><code>wonly</code></td></tr>
+<tr><td><code>H</code></td><td>Swap window to the left</td><td><code>swap_view_left</code></td></tr>
+<tr><td><code>J</code></td><td>Swap window downwards</td><td><code>swap_view_down</code></td></tr>
+<tr><td><code>K</code></td><td>Swap window upwards</td><td><code>swap_view_up</code></td></tr>
+<tr><td><code>L</code></td><td>Swap window to the right</td><td><code>swap_view_right</code></td></tr>
 </tbody></table>
 <h4 id="space-mode"><a class="header" href="#space-mode">Space mode</a></h4>
 <p>This layer is a kludge of mappings, mostly pickers.</p>
@@ -717,6 +721,8 @@ you to selectively add search terms to your selections.</p>
 <tr><td><code>:config-reload</code></td><td>Refreshes helix's config.</td></tr>
 <tr><td><code>:config-open</code></td><td>Open the helix config.toml file.</td></tr>
 <tr><td><code>:log-open</code></td><td>Open the helix log file.</td></tr>
+<tr><td><code>:insert-output</code></td><td>Run shell command, inserting output after each selection.</td></tr>
+<tr><td><code>:append-output</code></td><td>Run shell command, appending output after each selection.</td></tr>
 <tr><td><code>:pipe</code></td><td>Pipe each selection to the shell command.</td></tr>
 <tr><td><code>:run-shell-command</code>, <code>:sh</code></td><td>Run a shell command</td></tr>
 </tbody></table>
@@ -740,6 +746,7 @@ Languages</a> guide for more language configuration information.</p>
 <tr><td>dart</td><td>✓</td><td></td><td>✓</td><td><code>dart</code></td></tr>
 <tr><td>devicetree</td><td>✓</td><td></td><td>✓</td><td></td></tr>
 <tr><td>dockerfile</td><td>✓</td><td></td><td></td><td><code>docker-langserver</code></td></tr>
+<tr><td>edoc</td><td>✓</td><td></td><td></td><td></td></tr>
 <tr><td>eex</td><td>✓</td><td></td><td></td><td></td></tr>
 <tr><td>ejs</td><td>✓</td><td></td><td></td><td></td></tr>
 <tr><td>elixir</td><td>✓</td><td></td><td></td><td><code>elixir-ls</code></td></tr>
@@ -768,6 +775,7 @@ Languages</a> guide for more language configuration information.</p>
 <tr><td>iex</td><td>✓</td><td></td><td></td><td></td></tr>
 <tr><td>java</td><td>✓</td><td></td><td></td><td><code>jdtls</code></td></tr>
 <tr><td>javascript</td><td>✓</td><td></td><td>✓</td><td><code>typescript-language-server</code></td></tr>
+<tr><td>jsdoc</td><td>✓</td><td></td><td></td><td></td></tr>
 <tr><td>json</td><td>✓</td><td></td><td>✓</td><td><code>vscode-json-language-server</code></td></tr>
 <tr><td>jsx</td><td>✓</td><td></td><td>✓</td><td><code>typescript-language-server</code></td></tr>
 <tr><td>julia</td><td>✓</td><td></td><td></td><td><code>julia</code></td></tr>
@@ -1294,12 +1302,7 @@ j = { k = &quot;normal_mode&quot; } # Maps `jk` to exit insert mode
 <tr><td>Backspace</td><td><code>&quot;backspace&quot;</code></td></tr>
 <tr><td>Space</td><td><code>&quot;space&quot;</code></td></tr>
 <tr><td>Return/Enter</td><td><code>&quot;ret&quot;</code></td></tr>
-<tr><td>&lt;</td><td><code>&quot;lt&quot;</code></td></tr>
-<tr><td>&gt;</td><td><code>&quot;gt&quot;</code></td></tr>
-<tr><td>+</td><td><code>&quot;plus&quot;</code></td></tr>
 <tr><td>-</td><td><code>&quot;minus&quot;</code></td></tr>
-<tr><td>;</td><td><code>&quot;semicolon&quot;</code></td></tr>
-<tr><td>%</td><td><code>&quot;percent&quot;</code></td></tr>
 <tr><td>Left</td><td><code>&quot;left&quot;</code></td></tr>
 <tr><td>Right</td><td><code>&quot;right&quot;</code></td></tr>
 <tr><td>Up</td><td><code>&quot;up&quot;</code></td></tr>
@@ -1329,6 +1332,14 @@ j = { k = &quot;normal_mode&quot; } # Maps `jk` to exit insert mode
 [[language]]
 name = &quot;rust&quot;
 auto-format = false
+</code></pre>
+<h2 id="lsp-formatting-options"><a class="header" href="#lsp-formatting-options">LSP formatting options</a></h2>
+<p>Use <code>format</code> field to pass extra formatting options to <a href="https://github.com/microsoft/language-server-protocol/blob/gh-pages/_specifications/specification-3-16.md#document-formatting-request--leftwards_arrow_with_hook">Document Formatting Requests</a>.</p>
+<pre><code class="language-toml">[[language]]
+name = &quot;typescript&quot;
+auto-format = true
+# pass format options according to https://github.com/typescript-language-server/typescript-language-server#workspacedidchangeconfiguration omitting the &quot;[language].format.&quot; prefix.
+config = { format = { &quot;semicolons&quot; = &quot;insert&quot;, &quot;insertSpaceBeforeFunctionParenthesis&quot; = true } }
 </code></pre>
 <h2 id="tree-sitter-grammars"><a class="header" href="#tree-sitter-grammars">Tree-sitter grammars</a></h2>
 <p>Tree-sitter grammars can also be configured in <code>languages.toml</code>:</p>
